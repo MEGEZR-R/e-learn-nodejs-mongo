@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Assign a Course</title>
+</head>
+<body>
+  <h1>Assign a Course</h1>
+  <form action="/assign-course" method="post">
+    <label for="student">Select Student:</label>
+    <select name="student" id="student" required>
+      <!-- Use a loop to dynamically populate the options with student data -->
+      <% students.forEach((student) => { %>
+        <option value="<%= student._id %>"><%= student.firstName %> <%= student.lastName %></option>
+      <% }); %>
+    </select>
+
+    <label for="course">Select Course:</label>
+    <select name="course" id="course" required>
+      <!-- Use a loop to dynamically populate the options with course data -->
+      <% courses.forEach((course) => { %>
+        <option value="<%= course._id %>"><%= course.name %></option>
+      <% }); %>
+    </select>
+
+    <!-- Textarea to display the course description -->
+    <label for="courseDescription">Course Description:</label>
+    <textarea name="courseDescription" id="courseDescription" disabled></textarea><br>
+
+    <button type="submit">Assign Course</button>
+  </form>
+
+  <script>
+    // Get references to the select elements
+    const courseSelect = document.getElementById('course');
+    const courseDescriptionTextarea = document.getElementById('courseDescription');
+
+    // Add an event listener to update the textarea when a course is selected
+    courseSelect.addEventListener('change', () => {
+      const selectedCourseId = courseSelect.value;
+
+      // Make an AJAX request to fetch the course details
+      fetch(`/courses/${selectedCourseId}`)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data) {
+            // Update the textarea with the course description
+            courseDescriptionTextarea.value = data.description;
+          } else {
+            courseDescriptionTextarea.value = ''; // Clear the textarea if no data is found
+          }
+        })
+        .catch((error) => {
+          console.error('Error fetching course details:', error);
+          courseDescriptionTextarea.value = ''; // Clear the textarea on error
+        });
+    });
+  </script>
+</body>
+</html>

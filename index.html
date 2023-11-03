@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Welcome to E-Learning App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 0;
+    }
+  
+    h1 {
+      background-color: #007acc;
+      color: white;
+      padding: 10px;
+      border-radius: 5px;
+      text-align: center;
+    }
+  
+    h2 {
+      text-align: center;
+    }
+  
+    a {
+      display: block;
+      text-align: center;
+      margin: 10px 0;
+      text-decoration: none;
+    }
+  
+    button {
+      background-color: #007acc;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      display: block;
+      margin: 10px auto;
+    }
+  
+    button:hover {
+      background-color: #0056a7;
+    }
+  
+    #students, #courses {
+      margin: 20px;
+    }
+  
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+  
+    th, td {
+      border: 2px solid black;
+      padding: 8px;
+      text-align: left;
+    }
+  
+    th {
+      background-color: #f2f2f2;
+    }
+     h2 {
+    text-align: center;
+    color: #007acc; /* Change color to your preference */
+    margin: 20px 0;
+  }
+
+  /* Styling for Add Student and Add Course Links */
+  a {
+    display: block;
+    text-align: center;
+    margin: 10px 0;
+    text-decoration: none;
+    background-color: #007acc;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+  }
+
+  a:hover {
+    background-color: #0056a7;
+  }
+
+  /* Styling for Display Students and Display Courses Buttons */
+  button {
+    background-color: #007acc;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: block;
+    margin: 10px auto;
+  }
+
+  button:hover {
+    background-color: #0056a7;
+  }
+
+  /* Styling for the Students and Courses Table Headers */
+  #students table th,
+  #courses table th {
+    background-color: #007acc;
+    color: white;
+    text-align: center;
+  }
+  </style>
+</head>
+<body>
+  <h1>Welcome to the E-Learning App</h1>
+
+  <h2>Add a Student</h2>
+  <a href="/insert-student">Add Student</a>
+
+  <h2>Add a Course</h2>
+  <a href="/insert-course">Add Course</a>
+
+  <h2>Display Students and Courses</h2>
+  <button onclick="displayStudents()">Display Students</button>
+  <button onclick="displayCourses()">Display Courses</button>
+
+  <div id="students">
+    <h3>Students:</h3>
+    <table>
+      <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Phone</th>
+        <th>Age</th>
+        <th>Address</th>
+        <th>Bio</th>
+      </tr>
+    </table>
+  </div>
+  <div id="courses">
+    <h3>Courses:</h3>
+    <table>
+      <tr>
+        <th>Course Name</th>
+        <th>Course Description</th>
+      </tr>
+    </table>
+  </div>
+
+  <script>
+    function displayStudents() {
+      // Use JavaScript to make an AJAX request to the /students route
+      fetch('/students')
+        .then((response) => response.json())
+        .then((data) => {
+          const studentsDiv = document.getElementById('students');
+          const studentsTable = studentsDiv.querySelector('table');
+          data.forEach((student) => {
+            const row = studentsTable.insertRow();
+            const cell1 = row.insertCell(0);
+            const cell2 = row.insertCell(1);
+            const cell3 = row.insertCell(2);
+            const cell4 = row.insertCell(3);
+            const cell5 = row.insertCell(4);
+            const cell6 = row.insertCell(5);
+            cell1.innerHTML = student.firstName;
+            cell2.innerHTML = student.lastName;
+            cell3.innerHTML = student.phone;
+            cell4.innerHTML = student.age;
+            cell5.innerHTML = student.address;
+            cell6.innerHTML = student.bio;
+          });
+        })
+        .catch((error) => {
+          console.error('Error fetching students:', error);
+        });
+    }
+
+    function displayCourses() {
+      // Use JavaScript to make an AJAX request to the /courses route
+      fetch('/courses')
+        .then((response) => response.json())
+        .then((data) => {
+          const coursesDiv = document.getElementById('courses');
+          const coursesTable = coursesDiv.querySelector('table');
+          data.forEach((course) => {
+            const row = coursesTable.insertRow();
+            const cell1 = row.insertCell(0);
+            const cell2 = row.insertCell(1);
+            cell1.innerHTML = course.name;
+            cell2.innerHTML = course.description;
+          });
+        })
+        .catch((error) => {
+          console.error('Error fetching courses:', error);
+        });
+    }
+  </script>
+</body>
+</html>
